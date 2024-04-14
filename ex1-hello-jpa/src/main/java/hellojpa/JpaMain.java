@@ -1,9 +1,11 @@
-package jpabook.jpashop.domain;
+package hellojpa;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
+
+import java.util.List;
 
 public class JpaMain {
 
@@ -18,20 +20,34 @@ public class JpaMain {
 
         try {
 
-            {
-                Member member = em.find(Member.class, 150L);
-                member.setName("hi");
+            // 저장
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setUsername("member1");
+            member.changeTeam(team);
+            em.persist(member);
+
+            em.flush();
+            em.clear();
+
+            Member findMember = em.find(Member.class, member.getId());
+            List<Member> members = findMember.getTeam().getMembers();
+
+            for (Member member1 : members) {
+                System.out.println("m = "+member1.getUsername());
             }
 
-            {
-                // 영속
-                Member member1 = new Member(150L, "A");
-                Member member2 = new Member(150L, "B");
+            Team findTeam = findMember.getTeam();
 
-                em.persist(member1);
-                em.persist(member2);
-            }
 
+
+//            Member member = new Member();
+//            member.setUsername("C");
+//
+//            em.persist(member);
 
             /* 4.
             {

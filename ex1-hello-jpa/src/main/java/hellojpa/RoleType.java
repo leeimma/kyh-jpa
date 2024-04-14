@@ -1,4 +1,4 @@
-package jpabook.jpashop.domain;
+package hellojpa;
 
 public enum RoleType {
     USER, ADMIN
