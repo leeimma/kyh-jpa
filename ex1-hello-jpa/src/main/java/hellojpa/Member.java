@@ -8,12 +8,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-@SequenceGenerator(
-        name = "MEMBER_SEQ_GENERATOR",
-        sequenceName = "MEMBER_SEQ",
-        initialValue = 1, allocationSize = 1
-)
-public class Member {
+public class Member extends BaseEntity{
 
     @Id
     @GeneratedValue()
@@ -22,12 +17,10 @@ public class Member {
     @Column(name = "USERNAME")
     private String username;
 
-    @ManyToOne
-    @JoinColumn(name = "TEAM_ID", insertable = false, updatable = false)
-    private Team team;
-
     @OneToOne
     @JoinColumn(name = "LOCKER_ID")
     private Locker locker;
+
+
 
 }
