@@ -1,9 +1,11 @@
 package hellojpa;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
+import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+
+import java.util.List;
 
 public class JpaMain {
 
@@ -18,27 +20,19 @@ public class JpaMain {
 
         try {
 
-            Address address = new Address("city", "street", "10000");
-
-            Address address1 = new Address();
-
-//            Member member = new Member();
-//            member.setUsername ("hello");
-//            member.setAddress(address);
-//            em.persist(member);
-//
-//
-//
-//            Member member2 = new Member();
-//            member2.setUsername ("hello");
-//            member2.setAddress(address);
-//
-//            em.persist(member2);
+//            List<Member> resultList = em.createQuery("select m from Member m where m.username like '%kim%'").getResultList();
 
 
-            em.flush();
-            em.clear();
+            //Criteria 사용 준비
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Member> query = cb.createQuery(Member.class);
 
+            //루트 클래스 (조회를 시작할 클래스)
+            Root<Member> m = query.from(Member.class);
+            //쿼리 생성
+            CriteriaQuery<Member> cq =
+            query.select(m).where(cb.equal(m.get("username"), "kim"));
+            List<Member> resultList = em.createQuery(cq).getResultList();
 
             tx.commit();
         } catch (Exception e) {
