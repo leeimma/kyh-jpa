@@ -5,10 +5,10 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.*;
 
 @Entity
-public class Member extends BaseEntity{
+public class Member {
 
     @Id
     @GeneratedValue()
@@ -17,9 +17,30 @@ public class Member extends BaseEntity{
     @Column(name = "USERNAME")
     private String username;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn( name = "TEAM_Id", insertable = false, updatable = false)
-    private Team team;
+    @Embedded
+    private Period period;
+
+    @Embedded
+    private Address homeAddress;
+
+    @ElementCollection
+    @CollectionTable(name = "FAVORITE_FOOD", joinColumns = @JoinColumn(name = "MEMBER_ID"))
+    @Column(name = "FOOD_NAME")
+    private Set<String> favoriteFoods = new HashSet<>();
+
+
+    @ElementCollection
+    @CollectionTable(name = "ADDRESS", joinColumns = @JoinColumn(name = "MEMBER_ID"))
+    private List<Address> addressHistory = new ArrayList<>();
+
+
+//    @Embedded
+//    @AttributeOverrides({
+//        @AttributeOverride(name = "city", column = @Column(name = "WORK_CITY")),
+//        @AttributeOverride(name = "street", column = @Column(name = "WORK_STREET")),
+//        @AttributeOverride(name = "zipcode", column = @Column(name = "WORK_ZIPCODE"))
+//    })
+//    private Address workAddress;
 
 
     public String getId() {
@@ -38,12 +59,19 @@ public class Member extends BaseEntity{
         this.username = username;
     }
 
-    public Team getTeam() {
-        return team;
+    public Period getPeriod() {
+        return period;
     }
 
-    public void setTeam(Team team) {
-        this.team = team;
+    public void setPeriod(Period period) {
+        this.period = period;
     }
 
+    public Address getHomeAddress() {
+        return homeAddress;
+    }
+
+    public void setHomeAddress(Address homeAddress) {
+        this.homeAddress = homeAddress;
+    }
 }

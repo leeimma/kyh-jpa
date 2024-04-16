@@ -17,15 +17,27 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member = new Member();
-            member. setUsername ("hello");
 
-            em.persist(member);
+            Address address = new Address("city", "street", "10000");
+
+            Address address1 = new Address();
+
+//            Member member = new Member();
+//            member.setUsername ("hello");
+//            member.setAddress(address);
+//            em.persist(member);
+//
+//
+//
+//            Member member2 = new Member();
+//            member2.setUsername ("hello");
+//            member2.setAddress(address);
+//
+//            em.persist(member2);
+
 
             em.flush();
             em.clear();
-
-            Member member1 = em.find(Member.class, member.getId());
 
 
             tx.commit();
@@ -34,14 +46,6 @@ public class JpaMain {
         }
 
         emf.close();
-    }
-
-    private static void printMemberAndTeam(Member member) {
-        String username = member.getUsername();
-        System.out.println("username = " + username);
-
-        Team team = member.getTeam();
-        System.out.println("team = " + team.getName());
     }
 
 
